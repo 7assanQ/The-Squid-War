@@ -13,7 +13,7 @@
   - place both the game.py and the assets folder in the same directory/folder.
 
 
-- gameV11.zip is jus a quik way to download both game.py and the assets folder.
-  - just download this folder and extract it in VScode and run the code to play the game.
+- gameV11.zip is just a quick way to download both game.py and the assets folder.
+  - just download this folder and extract it in VScode or any other IDE and run the code to play the game.
   - once extracted it will show game.py and assets folder.
 
