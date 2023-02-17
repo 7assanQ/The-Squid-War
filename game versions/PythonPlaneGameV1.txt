@@ -1,0 +1,89 @@
+from ursina import *
+
+app = Ursina()
+player = Animation(     # player icon
+    'plane',
+    collider = 'box',
+    y = 0 ,             # start on the left position
+    x = -15         
+)
+
+Sky()                   # sky box
+camera.orthographic = True
+camera.fov = 20
+
+Entity(                 # background with the same size as the sky box
+    model = 'quad',
+    texture = 'sky',
+    scale = 36,
+    z = 1
+)
+
+monster = Entity(      # a monster positioned outside the sky box to the right side
+    model = 'cube',
+    texture = 'cthulhu',
+    collider = 'box',
+    scale = 2,
+    x = 20,
+    y = -10
+)
+
+monsters = []           # list of monsters
+
+def newMonster():       # generating new mosters
+    new = duplicate(
+        monster,
+        y = -5 + (54321 * time.dt) % 10     # to get a random postion for the new monster
+    )
+    monsters.append(new)                 # add to the monsters array
+    invoke(newMonster, delay = 1)
+
+newMonster()    
+
+def update():              # movments    
+
+    player.y += held_keys['w'] * 5 * time.dt    # moving and rotating the player using w and s keys
+    player.y -= held_keys['s'] * 5 * time.dt
+    player.x += held_keys['d'] * 2 * time.dt
+    player.x -= held_keys['a'] * 5 * time.dt
+
+    rotate_up = held_keys['w'] * -10
+    rotate_down = held_keys['s'] * 10
+
+    if rotate_up != 0:
+        player.rotation_z = rotate_up
+    else:
+        player.rotation_z = rotate_down  
+
+    for monster in monsters:         # to move all monsters to the left
+        monster.x -= 5 * time.dt 
+
+        kill = monster.intersects()  # to detect any intersectoin with monesters
+
+        if kill.hit:                 # when the kill is tregered remove a monster from the list and the sky box 
+            monsters.remove(monster)
+            invoke(destroy, monster, delay = 0.1)
+        dead = player.intersects()   # to detect any intersectoin with player
+
+        if dead.hit and kill.hit:                 # game over
+            quit()        
+
+def input(key):             # using space bar for firing the bullets
+    if key == 'space':
+        e = Entity(         # creating a bullet based on the player position
+            y = player.y,
+            x = player.x + 2.5,
+            model ='cube',
+            texture = 'bullet',
+            collider = 'cube',
+        )     
+
+        e.animate_x(
+            30,             # speed of bullet         
+            duration = 2,   # acceleration of bullet. lower faster
+            curve = curve.linear  # for linear motion of the bullet.
+        )
+
+        invoke(destroy, e, delay = 1)   # delay time to destroy the bullets
+
+app.run() # starting the game

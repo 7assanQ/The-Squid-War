@@ -1,0 +1,275 @@
+from ursina import *
+from random import randint
+
+def update():              # movments    
+
+    global offset, run, score, gameOverCheck, info, splashSound, bloodShape, spawningDelay, checktime, speed1, speed2, colorPic, sizeing# using the veriables from outside this update function
+
+    if run:     # run is set to true
+
+        offset += time.dt * 0.1     # speed of backGround
+        setattr(backGround, "texture_offset", (offset, 0)) # to move the backGround to the left
+
+        player.y += held_keys['w'] * 8 * time.dt    # moving and rotating the player using w and s keys
+        player.y -= held_keys['s'] * 8 * time.dt
+        player.x += held_keys['d'] * 2 * time.dt
+        player.x -= held_keys['a'] * 5 * time.dt
+
+        rotate_up = held_keys['w'] * -10
+        rotate_down = held_keys['s'] * 10
+
+        if rotate_up != 0:
+            player.rotation_z = rotate_up
+        else:
+            player.rotation_z = rotate_down  
+
+        for monster in monsters:         # to move all monsters to the left
+            monster.x -= random.randint(speed1, speed2) * time.dt
+
+            kill = monster.intersects()  # to detect any intersectoin with monesters
+
+            if kill.hit:                 # when the kill is tregered remove a monster from the list and the sky box 
+
+                bloodShape += random.randint(1, 2)   # to get a random number between 1, 2
+                if bloodShape % 2 == 0:   # to chech if even blood 1 if odd blood 2
+                    blood = Animation('assets\\purpleBlood2', position = (monster.x, monster.y), scale = 4)
+                    invoke(destroy, blood, delay = 0.3)
+                else:    
+                    blood2 = Animation('assets\\purpleBlood', position = (monster.x, monster.y), scale = 5)
+                    invoke(destroy, blood2, delay = 0.3)
+                monster.color = color.red # turn color to res when killed
+                monsters.remove(monster)
+                invoke(destroy, monster, delay = 0.1) 
+                score += 1
+                text = 'score: ' + str(score)
+                info.text = text
+                splashSound += random.randint(1, 2)
+                if score >= 350:
+                    speed1, speed2 = 13, 13
+                    spawningDelay = 0.7
+                elif score >= 260:
+                    speed1, speed2 = 12, 13
+                    sizeing = 1
+                elif score >= 170:
+                    speed1, speed2 = 10, 11
+                    colorPic = color.red
+                elif score >= 130:
+                    spawningDelay = 0.9
+                elif score >= 90:
+                    speed1, speed2 = 7, 12
+                elif score >= 45:
+                    spawningDelay = 1.2
+                elif score >= 15:
+                    spawningDelay = 1.5       
+
+                if splashSound % 2 == 0:   # to chech if even sound 1 if odd sound 2
+                    Audio('assets\\splash1.mp3')
+                else:    
+                    Audio('assets\\splash2.mp3')
+                
+            dead = player.intersects()   # to detect any intersectoin with player
+            accedent1 = wall1.intersects()
+            accedent2 = wall2.intersects()
+            accedent3 = wall3.intersects()
+            accedent4 = wall4.intersects()
+            
+            if dead.hit and kill.hit or accedent1.hit or accedent2.hit or accedent3.hit or accedent4.hit:   # game over
+                run = False
+                gameOverCheck = False
+                Audio('assets\\explosion.mp3')
+                invoke(Func(player.shake, duration = 2))
+                invoke(Func(player.fade_out, duration = 2))
+                invoke(gameOver, delay = 2)
+                # quit() 
+            
+    checktime += 0.5 * time.dt
+    if checktime >= 8:
+        if not monsters:            
+            spawnAgain()
+            checktime = 0                  
+
+def gameOver():         # display a game over text with the score. 
+    global score
+    Text(
+        text = "Game Over\nYour Score Is: " + str(score),
+        origin = (0,0),
+        background = True 
+        )       
+    #user_input = InputField()
+
+def input(key):             # using space bar for firing the bullets
+    global gunSound, run, pause, info2, info3, check, score # using the veriables from outside this input function
+
+    gunSound += random.randint(1, 2)   # to get a random number between 1, 2
+
+    if key == 'p':
+        if pause and not check and gameOverCheck:   # to be able to pause the game only after starting it and befor the game over
+            run = False
+            pause = False
+            info2 = Text('PAUSE\nPress p To Pause And Unpause', origin = (0,0))
+            info2.background = True 
+            
+            #invoke(newMonster, delay = 5)
+        elif not pause and not check and gameOverCheck:
+            run = True
+            pause = True  
+            destroy(info2)
+            #spawnAgain()
+            #invoke(newMonster, delay = 1)  
+
+    if key == 's':          # to only press s once 
+        if check:
+            run = True
+            destroy(info3)
+            check = False 
+            invoke(newMonster, delay = 1)       
+
+    if run:
+        if key == 'space':
+            if gunSound % 2 == 0:   # to chech if even sound 1 if odd sound 2
+                Audio('assets\\bullet1.mp3')
+            else:    
+                Audio('assets\\bullet2.mp3')
+
+            e = Entity(         # creating a bullet based on the player position
+                y = player.y,
+                x = player.x + 2.5,
+                model ='cube',
+                texture = 'assets\\bullet',
+                collider = 'cube',
+            )     
+
+            e.animate_x(
+                30,             # speed of bullet         
+                duration = 2,   # acceleration of bullet. lower faster
+                curve = curve.linear  # for linear motion of the bullet.
+            )
+
+            invoke(destroy, e, delay = 1)   # delay time to destroy the bullets
+
+app = Ursina()
+
+run = False      # run boolean veriable, to only run the game when true using the update function
+pause = True # boolean for pausing the game
+check = True # boolean to Start the game
+spawningDelay = 2 # spped of monsters
+checktime = 0 # chinking the empty monsters list
+speed1, speed2, = 5, 12 # speed of monstere
+colorPic = None # color of monsters
+sizeing = 2
+gameOverCheck = True # boolean to end the game and prevent the pause
+gunSound = 0    # viriable for gun sound
+splashSound = 0 # for the moster kill sound
+bloodShape = 0   # for boold shapes 1 and 2
+
+window.borderless = False               # Show a border
+window.exit_button.visible = False      # Do not show the in-game red X that loses the window
+window.fps_counter.enabled = True       # Show the FPS (Frames per second) counter
+
+
+player = Animation(     # player icon
+    'assets\\plane',
+    collider = 'box',
+    y = 0 ,             # start on the left position
+    x = -15         
+)
+
+Sky()                   # sky box
+camera.orthographic = True
+camera.fov = 20
+
+offset = 0      # backGround offset veriable
+
+backGround = Entity(                 # background
+    model = 'quad',
+    texture = 'assets\\Cartoon-Sky-Game',
+    scale = (38.5, 20),         # size of the backGround (x,y)
+    z = 1
+)
+
+monster = Entity(      # a monster positioned outside the sky box to the right side
+    model = 'cube',
+    texture = 'assets\\cthulhu',
+    collider = 'box',
+    scale = 2,
+    x = 20,
+    y = -10
+)
+
+wall1 = Entity(      # a wall positioned on the left
+    model = 'cube',
+    texture = 'white_cube',
+    collider = 'box',
+    color = color.red,
+    scale = (3, 25),
+    x = -21,
+    y = -3
+    )
+
+wall2 = Entity(      # a wall positioned on the right
+    model = 'cube',
+    texture = 'white_cube',
+    collider = 'box',
+    color = color.red,
+    scale = (3, 25),
+    x = 30,
+    y = -3
+    )    
+
+wall3 = Entity(      # a wall positioned on the top
+    model = 'cube',
+    texture = 'white_cube',
+    collider = 'box',
+    color = color.red,
+    scale = (40, 2),
+    x = 4,
+    y = 13
+    )
+
+wall4 = Entity(      # a wall positioned on the bottom
+    model = 'cube',
+    texture = 'white_cube',
+    collider = 'box',
+    color = color.red,
+    scale = (40, 2),
+    x = 4,
+    y = -13
+    )    
+           
+monsters = []           # list of monsters
+
+def newMonster():       # generating new mosters
+    global run, pause, spawningDelay
+
+    new = duplicate(
+        monster,
+        color = colorPic,
+        scale = sizeing,
+        y = random.randint(-6, 6)       # to get a random postion for the new monster
+    )
+
+    monsters.append(new)                 # add to the monsters array   
+
+    if run: # to pause spawning monsters
+        invoke(newMonster, delay = spawningDelay)     
+        
+
+#newMonster()           
+
+def spawnAgain():
+    if not monsters:
+        newMonster()
+
+score = 0   # score veriable
+Text.size = 0.05    
+Text.default_resolution = 1080 * Text.size
+info = Text('score: ' + str(score) + '    ')        # desplayed text 
+info.x = -0.88      # position of text
+info.y = 0.47
+info.background = True  
+info.visible = True        # Do not show this text
+
+info3 = Text('Press s To Start The Game\nPress p To Pause And Unpause', origin = (0,0))
+info3.background = True
+
+app.run() # starting the game
