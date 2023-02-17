@@ -3,7 +3,7 @@
 - TheSquidWar.exe is the executable file. 
    - This is the single player full game.
    - No need to download any other files this file is the complete sigle player game.
-
+   ![GameIcon](assets/squidp.png)
 
 - The Assets folder includes all the assests needed to run this game. include mp3, jpg, png, and ico.
 
