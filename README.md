@@ -5,12 +5,15 @@
    - No need to download any other files this file is the complete sigle player game.
    ![GameIcon](assets/squidp.png)
 
+
 - The Assets folder includes all the assests needed to run this game. include mp3, jpg, png, and ico.
+
 
 
 - game.py is the source code for the single player game.
   - need to also download the assets folder for it to run.
   - place both the game.py and the assets folder in the same directory/folder.
+
 
 
 - gameV11.zip is just a quick way to download both game.py and the assets folder.
