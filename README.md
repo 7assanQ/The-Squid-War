@@ -1,5 +1,12 @@
 # **The Squid War Game**
 
+# How to play
+
+W A S D to mover SPACE to shoot
+
+---
+
+
 - TheSquidWar.exe is the executable file. 
    - This is the single player full game.
    - No need to download any other files this file is the complete sigle player game.
