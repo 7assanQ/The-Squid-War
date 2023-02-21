@@ -1,4 +1,4 @@
-# ** The Squid War Game **
+# The Squid War Game
 
 - TheSquidWar.exe is the executable file. 
    - This is the single player full game.
