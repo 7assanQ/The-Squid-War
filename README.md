@@ -15,15 +15,15 @@ W A S D to move SPACE to shoot
 - TheSquidWarMultiplayer.exe is the executable file.
    - This is the Multiplayer full game.
    - No need to download any other files this file is the complete Multiplayer game.
-   - Need someone to run a server to host, so after entering the IP address in the game it will join the server.
-   - TheSquidWarMultiplayer.exe will run as a single player game if the wrong IP address is enterd of if there is no server hosting the game (just enter any number in the IP address text field). 
+   - Need someone to run a server to host, so after entering the IP address and the port in the game it will join the server.
+   - TheSquidWarMultiplayer.exe will run as a single player game if the wrong IP address, port is enterd or if there is no server hosting the game (just enter any number in the IP address text field). 
 
 ![GameIcon](assets/squid.ico)
 
 - TheSquidWarServer.exe is the executable file.
    - This is the server GUI for the game.
    - No need to download any other files this file is the complete server app for the game.
-   - Run the app and enter the local IP address to host other players playing the game.
+   - Run the app and enter the local IP address, port to host other players playing the game.
 
 ![ServerIcon](assets/squidServer.ico)
 
@@ -31,7 +31,7 @@ W A S D to move SPACE to shoot
 ---
 
 
-# Using the sorce code instead of the exe files
+# Using the source code instead of the exe files
 
 - This game is written in Python, so Python should be Installed. 
    Here is the link for installing Python [link to python](https://www.python.org/downloads/)
@@ -43,7 +43,7 @@ W A S D to move SPACE to shoot
    
 - After installing python and any IDE the following libraries need to be installed.   
    - Ursina library (game engine): in command prompt(cmd) write ```pip install ursina``` and click enter. wait for the library to be installed.
-   - Tkinter, Threads, socket libraries come along when installing Python.    
+   - Tkinter, Threads, socket, os libraries come along when installing Python.    
 
 **source code is provided in zip folders and in individual files**
 
@@ -62,12 +62,12 @@ W A S D to move SPACE to shoot
 - gameV12.zip is just a quick way to download both gameWscore.py serverGUI.py and the assets folder.
    - Just download this folder and extract it in VScode or any other IDE.
    - Once extracted it will show 2 files -> gameWscore.py and serverGUI.py and 1 folder the assets folder.
-   - Run serverGUI.py and enter the local IP address to host a game.
+   - Run serverGUI.py and enter the local IP address, port to host a game.
    
    - To get the IP address write ```ipconfig``` on Windows or ```ifconfig``` on linux in command prompt(cmd).
    
    - After setting up the server run gameWscore.py to joing the host server and play the game.
-   - If a wrong IP address is provided in gameWscore.py it will try to connect to the host server, then the connection will fail and it is a single player game. have fun.
+   - If a wrong IP address, port is provided in gameWscore.py it will try to connect to the host server, then the connection will fail and it is a single player game. have fun.
 
 
 ---
@@ -87,15 +87,17 @@ W A S D to move SPACE to shoot
    - Need to also download the assets folder for it to run.
    - Place both the gameWscore.py and the assets folder in the same directory/folder.
    - run gameWscore.py
-   - Enter the IP address provided by the host to join the server. have fun playing the game.
+   - Enter the IP address, port provided by the host to join the server. have fun playing the game.
 
 
 - serverGUI.py is the source code for the server for hosting multiple players running gameWscore.py
    - Need to also download the assets folder for it to run.
    - Place both the serverGUI.py and the assets folder in the same directory/folder.
-   - run serverGUI.py and enter the local IP address.
+   - run serverGUI.py and enter the local IP address, port.
 
    - To get the IP address write ```ipconfig``` on Windows or ```ifconfig``` on Linux in command prompt(cmd).
+
+   - for the port use any port that is not being used form 0 to 65535. example port 23456
 
    - Click the button and wait for players to join.
    - To join run gameWscore.py and make sure the assets folder in the same directory/folder and then enter the same IP address.
