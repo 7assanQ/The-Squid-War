@@ -2,7 +2,7 @@
 
 **How to play**
 
-W A S D to mover SPACE to shoot
+W A S D to move SPACE to shoot
 
 ---
 
