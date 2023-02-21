@@ -1,4 +1,4 @@
-# The Squid War Game
+# **The Squid War Game**
 
 - TheSquidWar.exe is the executable file. 
    - This is the single player full game.
@@ -38,7 +38,7 @@
    - Ursina library (game engine): in command prompt(cmd) write ```pip install ursina``` and click enter. wait for the library to be installed.
    - Tkinter, Threads, socket libraries come along when installing Python.    
 
-** source code is provided in zip folders and in individual files **
+**source code is provided in zip folders and in individual files**
 
 
 ---
