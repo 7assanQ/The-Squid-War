@@ -44,6 +44,8 @@
 ---
 
 
+# zip folders
+
  - gameV11.zip is just a quick way to download both game.py and the assets folder.
    - Just download this folder and extract it in VScode or any other IDE.
    - Once extracted it will show game.py and assets folder.
@@ -63,6 +65,8 @@
 
 ---
 
+
+# individual files
 
 - The Assets folder includes all the assests needed to run this game. include mp3, jpg, png, and ico.
 
