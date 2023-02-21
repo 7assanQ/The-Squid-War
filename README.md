@@ -1,6 +1,6 @@
 # **The Squid War Game**
 
-# How to play
+**How to play**
 
 W A S D to mover SPACE to shoot
 
