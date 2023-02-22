@@ -1,7 +1,6 @@
 import tkinter as tk
 import socket
 import threading
-import os
 
 name = ''
 score = ''
@@ -25,8 +24,6 @@ def destroySetUp():
         fg = "white",
         bg = "#8b5500"
     ) # changeing the label to show the ip and the text Leaderboard
-
-    label1.config(image=icon, compound="right") # to add the game icon next to the ip
 
     startServerThread()
     
@@ -60,19 +57,10 @@ def startServerThread():
     
 window = tk.Tk() # creating the window
 
-window.title("The Squid War Leaderboard") # set window title
-
-if "nt" == os.name: 
-    window.wm_iconbitmap(bitmap = "assets/squid.ico") # set window icon on windows
-else:
-    window.wm_iconbitmap(bitmap = "assets/squid.xbm") # set window icon on linux    
-
+window.title("The Squid War Leaderboard") # set window title   
 
 window.geometry("550x630") # set window size
 window.configure(background = "#8b5500") # set window background
-
-left_icon = tk.PhotoImage(file="assets/squidp.png")
-icon = left_icon.subsample(7) # to resize the image
 
 label1 = tk.Label(window, text="Enter Ip Adrress to Host:", compound="center") # create label 
 label1.pack()
