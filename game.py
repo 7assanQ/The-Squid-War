@@ -252,6 +252,8 @@ def reloadGame():
     # reset options text ------
     try:
         destroy(info3)
+        destroy(info5) # remove the name of the game from the scene
+        destroy(startSquid) # remove the icon in the middle of the scene
     except:
         pass  
     info3 = Text('Press S To Start The Game\nPress P To Pause And Unpause\nPress R To Reload The Game', origin = (0,0))
