@@ -264,6 +264,10 @@ def reloadGame():
     # reset all variables ------
 
     # reset options text ------
+	try:
+		destroy(info3)
+    except:
+        pass  
     info3 = Text('Press S To Start The Game\nPress P To Pause And Unpause\nPress R To Reload The Game', origin = (0,0))
     info3.background = True
     # reset options text ------
